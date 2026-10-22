@@ -1,0 +1,23 @@
+
+# Installed Node.js dependencies
+node_modules/
+
+# Local environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Local SQLite database files
+server/database/*.db
+server/database/*.db-*
+
+# Logs
+*.log
+npm-debug.log*
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Editor settings
+.vscode/

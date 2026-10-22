@@ -1,0 +1,215 @@
+
+/* ========================================
+   MY NOTES APP
+   Base styles and responsive layout
+   ======================================== */
+
+/* 1. Design variables */
+:root {
+    --primary-color: #3157d5;
+    --primary-hover: #2444b5;
+    --background-color: #f5f7fb;
+    --surface-color: #ffffff;
+    --text-color: #202938;
+    --muted-color: #64748b;
+    --border-color: #dce3ed;
+    --danger-color: #dc2626;
+    --radius: 12px;
+    --shadow: 0 4px 18px rgba(30, 41, 59, 0.06);
+}
+
+/* 2. Reset default browser spacing */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* 3. Shared page container */
+.container {
+    width: min(100% - 32px, 960px);
+    margin-inline: auto;
+}
+
+/* 4. Header */
+.site-header {
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    padding: 28px 0;
+}
+
+.site-header h1 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 2rem;
+}
+
+.site-header p {
+    margin: 4px 0 0;
+    color: var(--muted-color);
+}
+
+/* 5. Main content layout */
+main.container {
+    display: grid;
+    gap: 28px;
+    padding-top: 32px;
+    padding-bottom: 40px;
+}
+
+.note-form-section,
+.notes-section {
+    min-width: 0;
+    background-color: var(--surface-color);
+    padding: 24px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 1.3rem;
+}
+
+/* 6. Form fields */
+#note-form {
+    display: grid;
+    gap: 10px;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font: inherit;
+    color: var(--text-color);
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+}
+
+input:focus,
+textarea:focus {
+    outline: 3px solid rgba(49, 87, 213, 0.15);
+    border-color: var(--primary-color);
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* 7. Buttons */
+button {
+    width: fit-content;
+    padding: 11px 18px;
+    font: inherit;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+button:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 8. Search field */
+#search-notes {
+    margin-bottom: 20px;
+}
+
+/* 9. Notes area */
+#notes-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+#notes-list > p {
+    color: var(--muted-color);
+}
+
+/* JavaScript will use this class for each note card. */
+.note-card {
+    min-width: 0;
+    padding: 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--surface-color);
+    overflow-wrap: anywhere;
+}
+
+.note-card h3 {
+    margin: 0 0 8px;
+}
+
+.note-card p {
+    margin: 0 0 12px;
+    white-space: pre-wrap;
+}
+
+.note-meta {
+    color: var(--muted-color);
+    font-size: 0.85rem;
+}
+
+/* 10. Form status message */
+#form-message {
+    min-height: 1.5em;
+    color: var(--muted-color);
+}
+
+#form-message.error {
+    color: var(--danger-color);
+}
+
+/* 11. Footer */
+.site-footer {
+    padding: 20px 0;
+    text-align: center;
+    color: var(--muted-color);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+/* 12. Desktop layout */
+@media (min-width: 760px) {
+    main.container {
+        grid-template-columns: 0.85fr 1.15fr;
+        align-items: start;
+    }
+
+    .note-form-section {
+        position: sticky;
+        top: 24px;
+    }
+}

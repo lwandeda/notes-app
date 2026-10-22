@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A simple application to create and manage your notes.">
+    <title>My Notes App</title>
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="scripts/app.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <h1>My Notes</h1>
+            <p>Your thoughts, organised in one place.</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="note-form-section" aria-labelledby="form-heading">
+            <h2 id="form-heading">Create a note</h2>
+
+            <form id="note-form">
+                <label for="note-title">Title</label>
+                <input
+                    type="text"
+                    id="note-title"
+                    name="title"
+                    placeholder="Enter your note title"
+                    required
+                >
+
+                <label for="note-content">Content</label>
+                <textarea
+                    id="note-content"
+                    name="content"
+                    rows="5"
+                    placeholder="Write your thoughts here..."
+                ></textarea>
+
+                <button type="submit">Save note</button>
+            </form>
+
+            <p id="form-message" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="notes-section" aria-labelledby="notes-heading">
+            <h2 id="notes-heading">Your notes</h2>
+
+            <label for="search-notes">Search notes</label>
+            <input
+                type="search"
+                id="search-notes"
+                placeholder="Search by title or content..."
+            >
+
+            <div id="notes-list">
+                <p>Loading your notes...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; <span id="current-year"></span> My Notes App</p>
+        </div>
+    </footer>
+</body>
+</html>
