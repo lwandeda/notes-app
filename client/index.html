@@ -5,66 +5,107 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A simple application to create and manage your notes.">
+    <meta name="theme-color" content="#f4f6fb">
     <title>My Notes App</title>
     <link rel="stylesheet" href="styles/style.css">
     <script src="scripts/app.js" defer></script>
 </head>
 <body>
-    <header class="site-header">
-        <div class="container">
-            <h1>My Notes</h1>
-            <p>Your thoughts, organised in one place.</p>
-        </div>
-    </header>
+    <!-- Welcome screen for users who have not entered a name -->
+    <section id="welcome-screen" class="welcome-screen" aria-labelledby="welcome-heading">
+        <div class="welcome-card">
+            <div class="welcome-icon" aria-hidden="true">📝</div>
 
-    <main class="container">
-        <section class="note-form-section" aria-labelledby="form-heading">
-            <h2 id="form-heading">Create a note</h2>
+            <h1 id="welcome-heading">Welcome to Notes App</h1>
+            <p>Keep your thoughts, plans, and ideas organised in one place.</p>
 
-            <form id="note-form">
-                <label for="note-title">Title</label>
+            <form id="name-form">
+                <label for="user-name">What should we call you?</label>
                 <input
                     type="text"
-                    id="note-title"
-                    name="title"
-                    placeholder="Enter your note title"
+                    id="user-name"
+                    name="userName"
+                    placeholder="Enter your name"
+                    autocomplete="given-name"
+                    maxlength="50"
                     required
                 >
-
-                <label for="note-content">Content</label>
-                <textarea
-                    id="note-content"
-                    name="content"
-                    rows="5"
-                    placeholder="Write your thoughts here..."
-                ></textarea>
-
-                <button type="submit">Save note</button>
+                <button type="submit">Continue to your notes</button>
+                <p id="name-message" role="alert"></p>
             </form>
-
-            <p id="form-message" role="status" aria-live="polite"></p>
-        </section>
-
-        <section class="notes-section" aria-labelledby="notes-heading">
-            <h2 id="notes-heading">Your notes</h2>
-
-            <label for="search-notes">Search notes</label>
-            <input
-                type="search"
-                id="search-notes"
-                placeholder="Search by title or content..."
-            >
-
-            <div id="notes-list">
-                <p>Loading your notes...</p>
-            </div>
-        </section>
-    </main>
-
-    <footer class="site-footer">
-        <div class="container">
-            <p>&copy; <span id="current-year"></span> My Notes App</p>
         </div>
-    </footer>
+    </section>
+
+    <!-- Main application, shown after the user enters a name -->
+    <div id="app-container" hidden>
+        <header class="site-header">
+            <div class="container header-content">
+                <div class="brand">
+                    <h1 id="welcome-message">Welcome to Notes App!</h1>
+                    <p>Your thoughts, organised in one place.</p>
+                </div>
+
+                <button
+                    type="button"
+                    id="theme-toggle"
+                    class="theme-toggle"
+                    aria-label="Switch to dark mode"
+                >
+                    🌙 Dark mode
+                </button>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="note-form-section" aria-labelledby="form-heading">
+                <h2 id="form-heading">Create a note</h2>
+
+                <form id="note-form">
+                    <label for="note-title">Title</label>
+                    <input
+                        type="text"
+                        id="note-title"
+                        name="title"
+                        placeholder="Enter your note title"
+                        required
+                    >
+
+                    <label for="note-content">Content</label>
+                    <textarea
+                        id="note-content"
+                        name="content"
+                        rows="5"
+                        placeholder="Write your thoughts here..."
+                    ></textarea>
+
+                    <button type="submit">Save note</button>
+                </form>
+
+                <p id="form-message" role="status" aria-live="polite"></p>
+            </section>
+
+            <section class="notes-section" aria-labelledby="notes-heading">
+                <h2 id="notes-heading">Your notes</h2>
+
+                <label for="search-notes">Search notes</label>
+                <input
+                    type="search"
+                    id="search-notes"
+                    placeholder="Search by title or content..."
+                >
+
+                <div id="notes-list">
+                    <p>Loading your notes...</p>
+                </div>
+            </section>
+        </main>
+
+        <footer class="site-footer">
+            <div class="container">
+                <p>&copy; <span id="current-year"></span> My Notes App</p>
+            </div>
+        </footer>
+    </div>
 </body>
 </html>
+

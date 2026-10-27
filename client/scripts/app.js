@@ -3,8 +3,16 @@
    MY NOTES APP
    Frontend JavaScript
    ======================================== */
+   // Select the welcome-screen elements.
+const welcomeScreen = document.querySelector("#welcome-screen");
+const appContainer = document.querySelector("#app-container");
+const nameForm = document.querySelector("#name-form");
+const nameInput = document.querySelector("#user-name");
+const welcomeMessage = document.querySelector("#welcome-message");
+const nameMessage = document.querySelector("#name-message");
 
-// 1. Select the HTML elements we need.
+// Select the existing Notes App elements.
+
 const noteForm = document.querySelector("#note-form");
 const titleInput = document.querySelector("#note-title");
 const contentInput = document.querySelector("#note-content");
@@ -12,12 +20,113 @@ const notesList = document.querySelector("#notes-list");
 const searchInput = document.querySelector("#search-notes");
 const formMessage = document.querySelector("#form-message");
 const currentYear = document.querySelector("#current-year");
+// Select the dark-mode button.
+const themeToggle = document.querySelector("#theme-toggle");
+
+/* ==========================================
+   DARK MODE WITH SAVED PREFERENCE
+   ========================================== */
+
+// Apply the selected theme.
+function applyTheme(theme) {
+    const darkModeIsActive = theme === "dark";
+
+    // Turn dark mode on or off.
+    document.body.classList.toggle("dark-mode", darkModeIsActive);
+
+    // Update the button text and accessibility label.
+    if (darkModeIsActive) {
+        themeToggle.textContent = "☀️ Light mode";
+        themeToggle.setAttribute("aria-label", "Switch to light mode");
+    } else {
+        themeToggle.textContent = "🌙 Dark mode";
+        themeToggle.setAttribute("aria-label", "Switch to dark mode");
+    }
+}
+
+// Load the saved theme when the app starts.
+function initializeTheme() {
+    const savedTheme = localStorage.getItem("notesAppTheme");
+
+    // Use the saved theme, or light mode if no preference exists.
+    applyTheme(savedTheme === "dark" ? "dark" : "light");
+}
+
+// Save the new theme whenever the button is clicked.
+themeToggle.addEventListener("click", () => {
+    const darkModeIsActive =
+        document.body.classList.contains("dark-mode");
+
+    const newTheme = darkModeIsActive ? "light" : "dark";
+
+    // Remember the user's choice.
+    localStorage.setItem("notesAppTheme", newTheme);
+
+    // Apply the new theme immediately.
+    applyTheme(newTheme);
+});
+
+// Restore the user's preferred theme.
+initializeTheme();
+
+
 
 // Store the notes loaded from our backend.
 let notes = [];
 
 // 2. Display the current year in the footer.
 currentYear.textContent = new Date().getFullYear();
+
+/* ========================================
+   WELCOME SCREEN AND USER NAME
+   ======================================== */
+
+// Show the main app using the user's name.
+function showApp(userName) {
+    welcomeMessage.textContent = `Welcome to Notes App, ${userName}!`;
+
+    welcomeScreen.hidden = true;
+    appContainer.hidden = false;
+
+    // Load the user's existing notes.
+    loadNotes();
+}
+
+// Check whether the browser already remembers a name.
+function initializeWelcomeScreen() {
+    const savedName = localStorage.getItem("notesAppUserName");
+
+    if (savedName) {
+        // The user has visited before.
+        showApp(savedName);
+    } else {
+        // A new user must enter a name first.
+        welcomeScreen.hidden = false;
+        appContainer.hidden = true;
+    }
+}
+
+// Handle the name form when the user clicks Continue.
+nameForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    
+
+    const userName = nameInput.value.trim();
+
+    if (!userName) {
+        nameMessage.textContent = "Please enter your name to continue.";
+        nameInput.focus();
+        return;
+    }
+
+    // Remember the name in this browser.
+    localStorage.setItem("notesAppUserName", userName);
+
+    nameMessage.textContent = "";
+
+    // Open the main application.
+    showApp(userName);
+});
 
 // 3. Load notes from the backend.
 async function loadNotes() {
@@ -45,13 +154,21 @@ function displayNotes(notesToDisplay) {
     // Clear the previous contents.
     notesList.replaceChildren();
 
-    // Show a message if there are no notes.
+    
+    // Show a helpful message if there are no matching notes.
     if (notesToDisplay.length === 0) {
         const message = document.createElement("p");
-        message.textContent = "No notes found. Create your first note!";
+
+        if (searchInput.value.trim() !== "") {
+            message.textContent = "No notes match your search. Try another word.";
+        } else {
+            message.textContent = "You don't have any notes yet. Create your first note!";
+        }
+
         notesList.appendChild(message);
         return;
     }
+
 
    
     // Create a card for each note.
@@ -153,17 +270,24 @@ noteForm.addEventListener("submit", async (event) => {
     }
 });
 
-// 6. Search notes by title or content.
+
+/* 6. Search notes by title or content. */
 searchInput.addEventListener("input", () => {
+    // Get the search text and make it lowercase.
     const searchTerm = searchInput.value.trim().toLowerCase();
 
+    // Keep notes whose title or content matches.
     const filteredNotes = notes.filter((note) => {
+        const title = (note.title || "").toLowerCase();
+        const content = (note.content || "").toLowerCase();
+
         return (
-            note.title.toLowerCase().includes(searchTerm) ||
-            note.content.toLowerCase().includes(searchTerm)
+            title.includes(searchTerm) ||
+            content.includes(searchTerm)
         );
     });
 
+    // Display only the matching notes.
     displayNotes(filteredNotes);
 });
 
@@ -254,7 +378,7 @@ async function deleteNote(noteId) {
         }
 
         // Reload the notes after deletion.
-        await loadNotes();
+        await initializeWelcomeScreen();
 
         formMessage.textContent = "Note deleted successfully!";
         formMessage.className = "";
