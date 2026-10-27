@@ -3,8 +3,16 @@ const Database = require("better-sqlite3");
 const fs = require("node:fs");
 const path = require("node:path");
 
+// Use Railway's persistent volume when deployed.
+// Otherwise, use the local database folder.
+const databaseDirectory = process.env.RAILWAY_VOLUME_MOUNT_PATH
+    || __dirname;
+
+// Make sure the database directory exists.
+fs.mkdirSync(databaseDirectory, { recursive: true });
+
 // Build the path to the SQLite database file.
-const databasePath = path.join(__dirname, "notes.db");
+const databasePath = path.join(databaseDirectory, "notes.db");
 
 // Open the database, creating it if necessary.
 const db = new Database(databasePath);
